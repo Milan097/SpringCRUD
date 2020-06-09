@@ -25,8 +25,8 @@ public class StudentController {
 	
 	/*save student to db*/
 	@PostMapping("/student")
-	public Student createStudent(@Validated @RequestBody Student st)  {
-		return stuDAO.save(st);
+	public ResponseEntity<Student> createStudent(@Validated @RequestBody Student st)  {
+		return ResponseEntity.ok(stuDAO.save(st));
 	}
 	
 	/*get an student from db*/
