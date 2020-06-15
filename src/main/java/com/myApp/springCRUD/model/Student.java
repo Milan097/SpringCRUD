@@ -12,38 +12,59 @@ import org.springframework.lang.NonNull;
 
 
 @Entity
-@Table(name="Students")
+@Table(name = "Students")
 @EntityListeners(AuditingEntityListener.class)
 public class Student {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	
-	@NonNull
-	private String name;
-	
-	@NonNull
-	private int roll_no;
-	
-	 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public int getRoll_no() {
-		return roll_no;
-	}
-	public void setRoll_no(int roll_no) {
-		this.roll_no = roll_no;
-	}
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @NonNull
+    private String name;
+
+    @NonNull
+    private int rollNo;
+
+    @NonNull
+    private Address address;
+
+    public Student(@NonNull String name, int rollNo, @NonNull Address address) {
+        this.name = name;
+        this.rollNo = rollNo;
+        this.address = address;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRollNo() {
+        return rollNo;
+    }
+
+    public void setRollNo(int rollNo) {
+        this.rollNo = rollNo;
+    }
+
+    @NonNull
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NonNull Address address) {
+        this.address = address;
+    }
 }
