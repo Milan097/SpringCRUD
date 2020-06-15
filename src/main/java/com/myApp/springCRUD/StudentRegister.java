@@ -10,7 +10,8 @@ public class StudentRegister {
 	// This is new Version
 	// This is new Developement Branch
 	public static void main(String[] args) {
-		System.out.println("Development Branch -> Push");
+		System.out.println("Development Branch -> Push + Tags");
+		System.out.println("Tags");
 		SpringApplication.run(StudentRegister.class, args);
 	}
 	
