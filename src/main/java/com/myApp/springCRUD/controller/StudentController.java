@@ -68,6 +68,8 @@ public class StudentController {
         } else {
             stuDAO.delete(st);
             return ResponseEntity.ok().build();
+
+
         }
 
     }
