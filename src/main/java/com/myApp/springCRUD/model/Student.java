@@ -1,38 +1,40 @@
 package com.myApp.springCRUD.model;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.NonNull;
 
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "Students")
 @EntityListeners(AuditingEntityListener.class)
 public class Student {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @NonNull
+    @Column(name = "name")
     private String name;
 
     @NonNull
+    @Column(name = "roll_no")
     private int rollNo;
 
-    @NonNull
-    private Address address;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(referencedColumnName = "id" , name = "address_id")
+//    private Address address;
 
-    public Student(@NonNull String name, int rollNo, @NonNull Address address) {
+    public Student() {
+    }
+
+    public Student(@NonNull String name, int rollNo) {
         this.name = name;
         this.rollNo = rollNo;
-        this.address = address;
     }
 
     public int getId() {
@@ -59,12 +61,4 @@ public class Student {
         this.rollNo = rollNo;
     }
 
-    @NonNull
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(@NonNull Address address) {
-        this.address = address;
-    }
 }

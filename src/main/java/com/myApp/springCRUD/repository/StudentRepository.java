@@ -1,8 +1,11 @@
 package com.myApp.springCRUD.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.myApp.springCRUD.model.Student;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
 
-public interface StudentRepository extends JpaRepository<Student, Integer>{
+import java.util.Optional;
+
+public interface StudentRepository extends CrudRepository<Student, Integer> {
 
 }
