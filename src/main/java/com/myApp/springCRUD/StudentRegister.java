@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 public class StudentRegister {
 	// This is new Version
+	// This is new Developement Branch
 	public static void main(String[] args) {
+		System.out.println("Development Branch -> Push");
 		SpringApplication.run(StudentRegister.class, args);
 	}
 	
