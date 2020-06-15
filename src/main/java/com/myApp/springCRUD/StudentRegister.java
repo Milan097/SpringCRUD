@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableJpaAuditing
 public class StudentRegister {
-
+	// This is new Version
 	public static void main(String[] args) {
 		SpringApplication.run(StudentRegister.class, args);
 	}
