@@ -1,5 +1,6 @@
 package com.myApp.springCRUD.model;
 
+import com.sun.istack.NotNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -13,9 +14,11 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotNull
     @Column(name = "student_id")
     private int studentId;
 
+    @NotNull
     @Column(name = "line1")
     private String line1;
 
@@ -25,6 +28,7 @@ public class Address {
     @Column(name = "line3")
     private String line3;
 
+    @NotNull
     @Column(name = "pincode")
     private int pinCode;
 

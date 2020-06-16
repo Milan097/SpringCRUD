@@ -22,7 +22,7 @@ public class StudentRegisterTests {
 
     @Test
     public void findStudent() {
-        Optional<Student> student = studentRepository.findById(100);
+        Optional<Student> student = studentRepository.findById(55);
         assertNotNull(student);
         if(student.isPresent())
             System.out.println(student.get());
