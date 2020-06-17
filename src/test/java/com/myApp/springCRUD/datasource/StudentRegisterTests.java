@@ -1,4 +1,4 @@
-package com.myApp.springCRUD;
+package com.myApp.springCRUD.datasource;
 
 import com.myApp.springCRUD.model.Student;
 import com.myApp.springCRUD.repository.StudentRepository;
