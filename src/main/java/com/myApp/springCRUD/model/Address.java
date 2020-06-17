@@ -84,4 +84,15 @@ public class Address {
         this.id = addressId;
     }
 
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", studentId=" + studentId +
+                ", line1='" + line1 + '\'' +
+                ", line2='" + line2 + '\'' +
+                ", line3='" + line3 + '\'' +
+                ", pinCode=" + pinCode +
+                '}';
+    }
 }

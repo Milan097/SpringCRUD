@@ -1,12 +1,13 @@
 package com.myApp.springCRUD.model;
 
-import javax.persistence.*;
-
+import com.sun.istack.NotNull;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.lang.NonNull;
 
+import javax.persistence.*;
 
-@SuppressWarnings("unused")
+
+@SuppressWarnings({"unused", "NotNullFieldNotInitialized"})
 @Entity
 @Table(name = "Students")
 @EntityListeners(AuditingEntityListener.class)
@@ -25,14 +26,10 @@ public class Student {
     @Column(name = "roll_no")
     private int rollNo;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(referencedColumnName = "id" , name = "address_id")
-//    private Address address;
-
     public Student() {
     }
 
-    public Student(@NonNull String name, int rollNo) {
+    public Student(@NonNull String name, @NotNull int rollNo) {
         this.name = name;
         this.rollNo = rollNo;
     }
@@ -61,4 +58,12 @@ public class Student {
         this.rollNo = rollNo;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", rollNo=" + rollNo +
+                '}';
+    }
 }
