@@ -1,4 +1,4 @@
-package com.myApp.springCRUD.dao;
+package com.myApp.springCRUD.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.myApp.springCRUD.model.Student;
 import com.myApp.springCRUD.repository.StudentRepository;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @SuppressWarnings("unused")
 @Service

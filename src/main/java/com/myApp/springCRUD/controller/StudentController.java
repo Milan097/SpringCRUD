@@ -1,6 +1,6 @@
 package com.myApp.springCRUD.controller;
 
-import com.myApp.springCRUD.dao.StudentDAO;
+import com.myApp.springCRUD.service.StudentDAO;
 import com.myApp.springCRUD.model.Address;
 import com.myApp.springCRUD.model.Student;
 import com.myApp.springCRUD.model.StudentAddress;
