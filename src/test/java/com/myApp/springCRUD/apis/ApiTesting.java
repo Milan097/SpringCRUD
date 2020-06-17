@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@SuppressWarnings({"unused", "ConstantConditions"})
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ApiTesting {
