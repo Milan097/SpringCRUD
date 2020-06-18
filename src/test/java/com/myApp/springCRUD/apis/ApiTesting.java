@@ -13,6 +13,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.util.NestedServletException;
 
+import io.jsonwebtoken.SignatureException;
+
 @SuppressWarnings("RedundantThrows")
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -21,6 +23,89 @@ public class ApiTesting {
     @Autowired
     protected MockMvc mockMvc;
 
+    String apiToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaWxhbiIsImV4cCI6MTU5MjQ5NjQzNiwiaWF0IjoxNTkyNDYwNDM2fQ.2kMViSoHVy43fCrOjoHJK9Aqc_CfoVCAoJVVdnJhoDE";
+    // To Test Login Api
+    @Test
+    public void testUserLogin() throws Exception {
+        try {
+            String data = "{\n" +
+                    "    \"userName\" : \"milan\",\n" +
+                    "    \"password\" : \"milan\"\n" +
+                    "}";
+            ResultActions resultActions = mockMvc.perform(
+                    MockMvcRequestBuilders.post("/school/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(data));
+
+            apiToken = resultActions.andReturn().getResponse().getContentAsString();
+            System.out.println("\n"+apiToken+"\n");
+            apiToken = apiToken.substring(13,apiToken.length()-2);
+            System.out.println("\n"+apiToken+"\n");
+            resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Invalid Password at Login
+    @Test
+    public void testUserLoginInvalidPassword() throws Exception {
+        try {
+            String data = "{\n" +
+                    "    \"userName\" : \"milan\",\n" +
+                    "    \"password\" : \"milan123\"\n" +
+                    "}";
+            ResultActions resultActions = mockMvc.perform(
+                    MockMvcRequestBuilders.post("/school/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(data));
+
+            System.out.println("Response is " + resultActions.andReturn().getResponse().getStatus());
+            resultActions.andExpect(MockMvcResultMatchers.status().isForbidden());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // To test Get Student using Jwt Token
+    @Test
+    public void testGetStudentByIdJwtToken() throws Exception {
+        try {
+            ResultActions resultActions = mockMvc.perform(
+                    MockMvcRequestBuilders.get("/school/student/id/55")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer "+apiToken));
+
+            System.out.println("Response is " + resultActions.andReturn().getResponse().getContentAsString());
+            resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+            resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Milan Thummar"));
+            resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.rollNo").value("117"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetStudentByIdJwtTokenWithInvalidToken() throws Exception {
+        try {
+            ResultActions resultActions = mockMvc.perform(
+                    MockMvcRequestBuilders.get("/school/student/id/55")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .header("Authorization", "Bearer "+apiToken+"158"));
+
+            resultActions.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+        } catch (SignatureException e) {
+            System.out.println("Invalid Token");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    // All Test Below are For No security if Token based Scheme is there then this test cases are failed.
     // To Test Get Request for Student by id
     @Test
     public void testGetStudentById() throws Exception {
