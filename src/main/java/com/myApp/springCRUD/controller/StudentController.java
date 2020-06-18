@@ -1,18 +1,13 @@
 package com.myApp.springCRUD.controller;
 
-import com.myApp.springCRUD.model.*;
-import com.myApp.springCRUD.service.MyUserDetailsService;
 import com.myApp.springCRUD.service.StudentDAO;
+import com.myApp.springCRUD.model.Address;
+import com.myApp.springCRUD.model.Student;
+import com.myApp.springCRUD.model.StudentAddress;
 import com.myApp.springCRUD.repository.AddressRepository;
 import com.myApp.springCRUD.repository.StudentRepository;
-import com.myApp.springCRUD.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,45 +21,13 @@ import java.util.Optional;
 public class StudentController {
 
     @Autowired
-    private StudentDAO stuDAO;
+    StudentDAO stuDAO;
 
     @Autowired
-    private StudentRepository studentRepository;
+    StudentRepository studentRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    // End point to Login
-    @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticateToken(@RequestBody LoginRequest loginRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword())
-            );
-        } catch (DisabledException e) {
-            throw new Exception("User is Disabled", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("Invalid Username or Password", e);
-        }
-
-        // Generate Token For User Login
-        // So first, retrieve user from database (dummy)
-        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginRequest.getUserName());
-        // Generate Token for retrieved userDetails
-        final String jwtToken = jwtUtil.generateToken(userDetails);
-        // Send jwt token as response to user
-        return ResponseEntity.ok(new LoginResponse(jwtToken));
-    }
-
+    AddressRepository addressRepository;
 
     // add student to db
     @PostMapping("/student")
