@@ -1,19 +1,16 @@
 package com.myApp.springCRUD.controller;
 
-import com.myApp.springCRUD.model.*;
-import com.myApp.springCRUD.service.MyUserDetailsService;
-import com.myApp.springCRUD.service.StudentDAO;
+import com.myApp.springCRUD.model.Address;
+import com.myApp.springCRUD.model.Student;
 import com.myApp.springCRUD.repository.AddressRepository;
 import com.myApp.springCRUD.repository.StudentRepository;
+import com.myApp.springCRUD.service.MyUserDetailsService;
+import com.myApp.springCRUD.service.StudentDAO;
 import com.myApp.springCRUD.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings({"unused", "OptionalIsPresent"})
-@Service
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
 @RequestMapping("/school")
 public class StudentController {
 
@@ -43,38 +41,17 @@ public class StudentController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // End point to Login
-    @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticateToken(@RequestBody LoginRequest loginRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword())
-            );
-        } catch (DisabledException e) {
-            throw new Exception("User is Disabled", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("Invalid Username or Password", e);
-        }
-
-        // Generate Token For User Login
-        // So first, retrieve user from database (dummy)
-        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginRequest.getUserName());
-        // Generate Token for retrieved userDetails
-        final String jwtToken = jwtUtil.generateToken(userDetails);
-        // Send jwt token as response to user
-        return ResponseEntity.ok(new LoginResponse(jwtToken));
-    }
-
-
-    // add student to db
-    @PostMapping("/student")
-    public ResponseEntity<Student> createStudent(@Validated @RequestBody StudentAddress studentAddress) {
-        Student student = new Student(studentAddress.getName(), studentAddress.getRollNo());
-        return stuDAO.createStudent(student, studentAddress.getAddress());
-    }
+// Added To AuthController
+//    // add student to db
+//    @PostMapping("/student")
+//    public ResponseEntity<Student> createStudent(@Validated @RequestBody StudentAddress studentAddress) {
+//        Student student = new Student(studentAddress.getName(), studentAddress.getRollNo(), studentAddress.getPassword());
+//        return stuDAO.createStudent(student, studentAddress.getAddress());
+//    }
 
     // add address of student by student_id
     @PostMapping("/student/id/{id}/address")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Address> addAddressById(@PathVariable(value = "id") Integer stId, @Validated @RequestBody Address address) {
         try {
             return stuDAO.addAddressById(stId, address);
@@ -86,6 +63,7 @@ public class StudentController {
 
     // add address of student by roll_no
     @PostMapping("/student/rollNo/{rollNo}/address")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Address> addAddressByRollNo(@PathVariable(value = "rollNo") Integer stRollNo, @Validated @RequestBody Address address) {
         return stuDAO.addAddressByRollNo(stRollNo, address);
     }
@@ -93,6 +71,7 @@ public class StudentController {
 
     // get an student from db
     @GetMapping("/student/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Student> getStudentById(@PathVariable(value = "id") Integer stId) {
         Optional<Student> st = studentRepository.findById(stId);
         if (!st.isPresent()) {
@@ -104,6 +83,7 @@ public class StudentController {
 
     // get a student by roll_no
     @GetMapping("/student/rollNo/{rollNo}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Student> getStudentByRollNo(@PathVariable(value = "rollNo") Integer stRollNo) {
         Optional<Student> st = studentRepository.findByRollNo(stRollNo);
         if (!st.isPresent()) {
