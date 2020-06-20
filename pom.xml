@@ -15,7 +15,27 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <deploy.jboss.host>127.0.0.1</deploy.jboss.host>
+        <deploy.jboss.port>9990</deploy.jboss.port>
+        <deploy.jboss.username>milan</deploy.jboss.username>
+        <deploy.jboss.password>Milan@097</deploy.jboss.password>
+    </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.6.2.Final</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -72,10 +92,46 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
 
 
     </dependencies>
     <build>
         <finalName>springCRUD</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>2.0.2.Final</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filename>${project.build.finalName}.war</filename>
+                    <hostname>${deploy.jboss.host}</hostname>
+                    <port>${deploy.jboss.port}</port>
+                    <username>${deploy.jboss.username}</username>
+                    <password>${deploy.jboss.password}</password>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
