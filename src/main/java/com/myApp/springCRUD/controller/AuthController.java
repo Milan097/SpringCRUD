@@ -14,6 +14,8 @@ import com.myApp.springCRUD.service.StudentDAO;
 import com.myApp.springCRUD.service.UserDetailImpl;
 import com.myApp.springCRUD.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/school/auth")
+@RefreshScope
 public class AuthController {
 
     @Autowired
@@ -54,6 +57,13 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Value("${message:Hello Default}")
+    private String message;
+
+    @GetMapping("message")
+    public ResponseEntity<?> message() {
+        return ResponseEntity.ok(message);
+    }
 
     // End point to Login
     @PostMapping("/signin")
